@@ -1,0 +1,23 @@
+int main() {
+    // Stack demo
+    Stack st;
+    st.push(10);
+    st.push(20);
+    st.push(30);
+    st.display();
+    cout << "Top element: " << st.peek() << endl;
+    st.pop();
+    st.display();
+
+    // Queue demo
+    Queue q;
+    q.enqueue(1);
+    q.enqueue(2);
+    q.enqueue(3);
+    q.display();
+    cout << "Front element: " << q.peek() << endl;
+    q.dequeue();
+    q.display();
+
+    return 0;
+}
