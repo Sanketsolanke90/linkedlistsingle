@@ -1,182 +1,79 @@
-#include <iostream>
-#include <vector>
-using namespace std;
+# Linked List in C++
 
-struct Node {
-    int data;
-    Node* next;
+🚀 This repository contains **Linked List implementations and problems** in C++ for interview preparation and practice.
 
-    Node(int data1, Node* next1 = nullptr) {
-        data = data1;
-        next = next1;
-    }
-};
+---
 
-// Print the linked list
-void printList(Node* head) {
-    Node* temp = head;
-    while (temp) {
-        cout << temp->data << " ";
-        temp = temp->next;
-    }
-    cout << endl;
-}
+## 📌 What is a Linked List?
+A **Linked List** is a linear data structure in which elements (called **nodes**) are connected using **pointers** instead of being stored in contiguous memory like arrays.  
+Each node consists of:
+- **Data** → the actual value
+- **Next pointer** → address of the next node in the list
 
-// Convert vector to linked list and print it
-Node* convert(vector<int>& arr) {
-    if (arr.empty()) return nullptr;
+---
 
-    Node* head = new Node(arr[0]);
-    Node* mover = head;
+## 📂 Types of Linked Lists
+1. **Singly Linked List (SLL)**  
+   Each node points to the next node, and the last node points to `NULL`.
 
-    for (int i = 1; i < arr.size(); i++) {
-        Node* temp = new Node(arr[i]);
-        mover->next = temp;
-        mover = temp;
-    }
+2. **Doubly Linked List (DLL)**  
+   Each node has two pointers:
+   - `prev` → previous node
+   - `next` → next node
 
-    cout << "Linked List created: ";
-    printList(head);
-    return head;
-}
+3. **Circular Linked List (CLL)**  
+   - Last node points back to the head.
+   - Can be singly or doubly circular.
 
-// Delete head node
-Node* deleteHead(Node* head) {
-    if (head == nullptr) return head;
-    Node* temp = head;
-    head = head->next;
-    delete temp;
-    return head;
-}
+---
 
-// Delete tail node
-Node* deleteTail(Node* head) {
-    if (head == nullptr || head->next == nullptr) return nullptr;
-    Node* temp = head;
-    while (temp->next->next != nullptr) {
-        temp = temp->next;
-    }
-    delete temp->next;
-    temp->next = nullptr;
-    return head;
-}
+## ✅ Advantages
+- Dynamic memory allocation (no fixed size like arrays)
+- Easy insertion and deletion (no shifting of elements)
+- Efficient for implementing **stacks, queues, and graphs**
 
-// Delete kth node
-Node* deleteKth(Node* head, int k) {
-    if (head == nullptr) return head;
-    if (k == 1) {
-        Node* temp = head;
-        head = head->next;
-        delete temp;
-        return head;
-    }
+## ❌ Disadvantages
+- More memory per node (extra pointer storage)
+- Sequential access only (no direct indexing)
+- Cache-unfriendly compared to arrays
 
-    int cnt = 1;
-    Node* temp = head;
-    Node* prev = nullptr;
+---
 
-    while (temp != nullptr && cnt < k) {
-        prev = temp;
-        temp = temp->next;
-        cnt++;
-    }
+## 📊 Time Complexity (Common Operations)
 
-    if (temp != nullptr && prev != nullptr) {
-        prev->next = temp->next;
-        delete temp;
-    }
+| Operation                  | Singly Linked List | Doubly Linked List |
+|-----------------------------|--------------------|--------------------|
+| Traversal                  | O(n)              | O(n)              |
+| Insertion at Beginning      | O(1)              | O(1)              |
+| Insertion at End            | O(n) (O(1) with tail pointer) | O(1) with tail pointer |
+| Insertion at Nth Node       | O(n)              | O(n)              |
+| Deletion at Beginning       | O(1)              | O(1)              |
+| Deletion at End             | O(n)              | O(1)              |
+| Deletion at Nth Node        | O(n)              | O(n)              |
+| Search                      | O(n)              | O(n)              |
 
-    return head;
-}
+---
 
-// Insert at head
-Node* insertHead(Node* head, int val) {
-    Node* temp = new Node(val, head);
-    return temp;
-}
+## 📝 Implemented Questions
 
-// Insert at tail
-Node* insertTail(Node* head, int val) {
-    if (head == nullptr) return new Node(val);
-    Node* temp = head;
-    while (temp->next != nullptr) {
-        temp = temp->next;
-    }
-    temp->next = new Node(val);
-    return head;
-}
+### 🔹 Basic Operations
+- [x] Insertion at the beginning (head)  
+- [x] Insertion at the end (tail)  
+- [x] Insertion at the Nth position  
+- [x] Deletion at the beginning (head)  
+- [x] Deletion at the end (tail)  
+- [x] Deletion at the Nth position  
 
-// Insert at kth position
-Node* insertKth(Node* head, int el, int k) {
-    if (head == nullptr) {
-        if (k == 1) return new Node(el);
-        else return nullptr;
-    }
-    if (k == 1) return new Node(el, head);
+### 🔹 Intermediate Problems
+- [x] Check if Linked List is a Palindrome  
 
-    int cnt = 1;
-    Node* temp = head;
-    while (temp != nullptr && cnt < k - 1) {
-        temp = temp->next;
-        cnt++;
-    }
+### 🔹 Upcoming (To-Do 🚀)
+- Reverse a Linked List (Iterative & Recursive)  
+- Detect & Remove Loop in a Linked List  
+- Find Middle Node  
+- Merge Two Sorted Linked Lists  
+- Remove Duplicates from Sorted/Unsorted Linked List  
 
-    if (temp != nullptr) {
-        Node* x = new Node(el, temp->next);
-        temp->next = x;
-    }
-    return head;
-}
+---
 
-// Insert before a specific value
-Node* insertBeforeVal(Node* head, int el, int val) {
-    if (head == nullptr) return nullptr;
-    if (head->data == val) return new Node(el, head);
-
-    Node* temp = head;
-    while (temp->next != nullptr) {
-        if (temp->next->data == val) {
-            Node* x = new Node(el, temp->next);
-            temp->next = x;
-            break;
-        }
-        temp = temp->next;
-    }
-    return head;
-}
-
-int main() {
-    vector<int> arr = {1, 2, 3, 4, 5};
-
-    Node* head = convert(arr);
-
-    head = deleteHead(head);
-    cout << "After deleting head: ";
-    printList(head);
-
-    head = deleteTail(head);
-    cout << "After deleting tail: ";
-    printList(head);
-
-    head = deleteKth(head, 2);
-    cout << "After deleting 2nd node: ";
-    printList(head);
-
-    head = insertHead(head, 100);
-    cout << "After inserting at head: ";
-    printList(head);
-
-    head = insertTail(head, 200);
-    cout << "After inserting at tail: ";
-    printList(head);
-
-    head = insertKth(head, 300, 3);
-    cout << "After inserting 300 at 3rd position: ";
-    printList(head);
-
-    head = insertBeforeVal(head, 150, 200);
-    cout << "After inserting 150 before 200: ";
-    printList(head);
-
-    return 0;
-}
+## 📂 Project Structure
